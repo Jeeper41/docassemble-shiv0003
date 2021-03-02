@@ -17,7 +17,7 @@ subquestion: |
 
 buttons:
  - Exit: exit
-   url: http://www.courts.sa.gov.au/Pages/default.aspx
+   url: https://www.fedcourt.gov.au/
  - Restart: restart
  - Next: continue
 ---
@@ -60,7 +60,7 @@ subquestion:
   This app does not prepare Form 1 for this court. Please select another court to continue. **Only forms for the Federal court and the Federal Circuit court can be completed using this app.**
 buttons: 
   - Exit: exit
-    url: http://www.courts.sa.gov.au/Pages/default.aspx
+    url: https://www.fedcourt.gov.au/
   - Restart: restart
 ---
 objects:
@@ -124,6 +124,6 @@ attachment:
   - pdf
 buttons: 
   - Exit: exit
-    url: http://www.courts.sa.gov.au/Pages/default.aspx
+    url: https://www.fedcourt.gov.au/
   - Restart: restart
 ---
