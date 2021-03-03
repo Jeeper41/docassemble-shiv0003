@@ -1,0 +1,137 @@
+---
+objects:
+ - endpoint: DADict
+---
+mandatory: True
+question: Welcome 
+subquestion: |
+  Hello **${ ARJsalutation + ' ' + ARJfirstname + ' ' + ARJlastname }**
+      
+  Welcome to the Federal Courts application. This application will let you quickly and easily fill in Form 1. Please select the relevent court shown in the choices on the next page. Please click on 'Next' to continue.
+
+ 
+  **Disclaimer**: *The form you complete on this app must be checked by a lawyer, this app does not give legal advice.*
+
+buttons:
+ - Exit: exit
+   url: https://www.fedcourt.gov.au/
+ - Restart: restart
+ - Next: continue
+---
+question:  Welcome! Please enter your salutation, first name and last name, and click 'Continue'.
+fields:
+ - Salutation: ARJsalutation
+   choices:
+   - Dr
+   - Mr
+   - Mrs
+   - Ms
+ - First Name: ARJfirstname
+ - Last Name: ARJlastname
+---
+mandatory: True
+question: Welcome
+subquestion: |
+ Please select the court from the following list for which the file is to be completed, and click 'Continue'.
+fields:
+  - no label: ARJitem
+    choices:
+      - 'Supreme Court'
+      - 'District Court'
+      - 'Magistrates Court'
+      - 'Federal Court'
+      - 'Federal Circuit Court'
+---
+mandatory: True
+code: |
+  if ARJitem == 'Federal Court':
+    endpoint['eligible']
+  if ARJitem == 'Federal Circuit Court':
+    endpoint['eligible']
+  else:
+    endpoint['ineligible'] 
+---
+event: endpoint['ineligible']
+question: This app does not prepare Form 1 for this court.
+subquestion: |
+ Please select another court to continue. **Only forms for the Federal court and the Federal Circuit court can be completed using this app.**
+buttons:
+  - Exit: exit
+    url: https://www.fedcourt.gov.au/
+  - Restart: restart
+---
+objects:
+ party: Individual
+ other_party: Individual
+---
+mandatory: true
+question: |
+ Please select the State/Territory from the list, and click 'Continue'.
+fields:
+  - no label: ARJstate
+    choices:
+      - 'South Australia'
+      - 'Western Australia'
+      - 'Northern Territory'
+      - 'Queensland'
+      - 'New South Wales'
+      - 'Australian Capital Territory'
+      - 'Victoria'
+      - 'Tasmania'
+---
+mandatory: true
+question: |
+ Please select the division, and click 'Continue'.
+fields:
+  - no label: ARJdivision
+    choices:
+      - 'Corporations'
+      - 'Criminal'
+      - 'Employment'
+      - 'General'
+---
+question: |
+  What is the applicant's name? Please enter first and last names below, and click 'Continue'.
+fields:
+  - First Name: party.first.name
+  - Last Name: party.name.last
+---
+mandatory: true
+question: |
+  What is the respondant's name? Please enter first and last names below, and click 'Continue'.
+fields:
+  - First Name: other_party.name.first
+  - Last Name: other_party.name.last
+---
+mandatory: True
+question: |
+  Please select date, and click 'Continue'.
+fields:
+  - Date: some_date
+    datatype: date
+---
+event: endpoint['eligible']
+mandatory: true
+question: Your completed Form 1 for the selected court is available below.
+subquestion: |
+ Below is a summary of the details you have provided.
+ 
+ Question|Answer
+ ------|------
+ Applicant name|*${ ARJfirstname + ' ' + ARJlastname }
+ Respondant name|*${other_party.name.first + ' ' + other_party.name.last }
+ Court|*${ ARJitem }
+ Division|*${ ARJdivision }
+ Date| *${some_date}
+ 
+ You can also email Form 1 to yourself. If you wish to do this please enter your email address below.
+ 
+attachment: 
+ docx template file: FCAForm2.docx 
+ valid formats:
+  - pdf
+buttons: 
+  - Exit: exit
+    url: https://www.fedcourt.gov.au/
+  - Restart: restart
+---
